@@ -58,7 +58,7 @@ cd ..
 cd apps
 CXX="%{__cxx}" \
 CXXFLAGS="%{rpmcxxflags}" \
-CPPFLAGS="%{rpmcppflags} -I../libx" \
+CPPFLAGS="%{rpmcppflags} -I../libs" \
 LDFLAGS="%{rpmldflags} -L../libs" \
 %{__make}
 cd ..
