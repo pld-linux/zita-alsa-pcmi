@@ -66,7 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} -C libs install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	PREFIX=%{_prefix}
+	PREFIX=%{_prefix} \
+	LIBDIR=%{_lib}
 
 %{__make} -C apps install \
 	DESTDIR=$RPM_BUILD_ROOT \
