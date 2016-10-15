@@ -1,7 +1,7 @@
 Summary:	C++ library for easy access to ALSA PCM devices
 Name:		zita-alsa-pcmi
 Version:	0.2.0
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		Libraries
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
@@ -21,6 +21,7 @@ floating point audio data.
 Summary:	Header files for %{name} library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki %{name}
 Group:		Development/Libraries
+Requires:	alsa-lib-devel
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
