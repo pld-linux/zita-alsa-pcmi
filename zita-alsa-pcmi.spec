@@ -6,7 +6,7 @@ License:	GPL v3+
 Group:		Libraries
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
 # Source0-md5:	0ba4d59abce231056e2628d081124114
-Patch0:		ldconfig.patch
+Patch0:		makefile.patch
 URL:		http://kokkinizita.linuxaudio.org/linuxaudio/
 BuildRequires:	alsa-lib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -47,18 +47,20 @@ Przykładowe aplikacje biblioteki %{name}.
 
 %build
 cd libs
-%{__make} \
-	CXXFLAGS="%{rpmcxxflags}" \
-	CPPFLAGS="%{rpmcppflags}" \
-	LDFLAGS="%{rpmldflags}"
+CXX="%{__cxx}" \
+CXXFLAGS="%{rpmcxxflags}" \
+CPPFLAGS="%{rpmcppflags}" \
+LDFLAGS="%{rpmldflags}" \
+%{__make}
 ln -sf libzita-alsa-pcmi.so.* libzita-alsa-pcmi.so
 cd ..
 
 cd apps
-%{__make} \
-	CXXFLAGS="%{rpmcxxflags}" \
-	CPPFLAGS="%{rpmcppflags} -I../libs" \
-	LDFLAGS="%{rpmldflags} -L../libs"
+CXX="%{__cxx}" \
+CXXFLAGS="%{rpmcxxflags}" \
+CPPFLAGS="%{rpmcppflags} -I../libx" \
+LDFLAGS="%{rpmldflags} -L../libs" \
+%{__make}
 cd ..
 
 %install
