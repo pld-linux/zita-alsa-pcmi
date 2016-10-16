@@ -9,6 +9,7 @@ Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{versio
 Patch0:		makefile.patch
 URL:		http://kokkinizita.linuxaudio.org/linuxaudio/
 BuildRequires:	alsa-lib-devel
+BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
