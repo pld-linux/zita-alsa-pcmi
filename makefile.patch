@@ -1,59 +1,41 @@
-diff -dur zita-alsa-pcmi-0.2.0.orig/apps/Makefile zita-alsa-pcmi-0.2.0/apps/Makefile
---- zita-alsa-pcmi-0.2.0.orig/apps/Makefile	2012-03-20 21:23:07.000000000 +0100
-+++ zita-alsa-pcmi-0.2.0/apps/Makefile	2016-10-15 12:35:42.895883965 +0200
-@@ -25,7 +25,7 @@
- VERSION = "0.1.0"
- LDFLAGS += -L$(PREFIX)/$(LIBDIR)
- CPPFLAGS += -DVERSION=\"$(VERSION)\"
--CXXFLAGS += -O2 -Wall -MMD -MP
-+CXXFLAGS += -Wall -MMD -MP
+--- zita-alsa-pcmi-0.3.2/apps/Makefile.orig	2021-09-26 20:12:49.143936028 +0200
++++ zita-alsa-pcmi-0.3.2/apps/Makefile	2021-09-26 20:18:13.738844213 +0200
+@@ -25,7 +25,7 @@ BINDIR ?= $(PREFIX)/bin
+ 
+ VERSION = "0.3.2"
+ CPPFLAGS +=  -MMD -MP -DVERSION=\"$(VERSION)\"
+-CXXFLAGS += -O2 -Wall
++CXXFLAGS += -Wall
  
  
  all:	alsa_loopback alsa_delay
-@@ -34,7 +34,7 @@
- ALSA_LOOPBACK_O =	alsa_loopback.o pxthread.o
- alsa_loopback:	LDLIBS += -lzita-alsa-pcmi -lasound -lpthread -lrt
- alsa_loopback:	$(ALSA_LOOPBACK_O)
--	g++ $(LDFLAGS) -o $@ $(ALSA_LOOPBACK_O) $(LDLIBS)
-+	$(CXX) $(LDFLAGS) -o $@ $(ALSA_LOOPBACK_O) $(LDLIBS)
- $(ALSA_LOOPBACK_O):
- -include $(_ALSA_LOOPBACK_O:%.o=%.d)
- 
-@@ -42,7 +42,7 @@
- ALSA_DELAY_O =	alsa_delay.o mtdm.o pxthread.o
- alsa_delay:	LDLIBS += -lzita-alsa-pcmi -lasound -lpthread -lrt
- alsa_delay:	$(ALSA_DELAY_O)
--	g++ $(LDFLAGS) -o $@ $(ALSA_DELAY_O) $(LDLIBS)
-+	$(CXX) $(LDFLAGS) -o $@ $(ALSA_DELAY_O) $(LDLIBS)
- $(ALSA_DELAY_O):
- -include $(ALSA_DELAY_O:%.o=%.d)
- 
-diff -dur zita-alsa-pcmi-0.2.0.orig/libs/Makefile zita-alsa-pcmi-0.2.0/libs/Makefile
---- zita-alsa-pcmi-0.2.0.orig/libs/Makefile	2012-03-20 21:23:07.000000000 +0100
-+++ zita-alsa-pcmi-0.2.0/libs/Makefile	2016-10-15 12:35:36.072491159 +0200
-@@ -31,7 +31,7 @@
+@@ -48,7 +48,7 @@ $(ALSA_DELAY_O):
  
  
- CPPFLAGS += -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
--CXXFLAGS += -O2 -Wall -I. -fPIC
-+CXXFLAGS += -Wall -I. -fPIC
+ install:	all
+-	install -d $(BINDIR)
++	install -d $(DESTDIR)$(BINDIR)
+ 	install -m 755 alsa_loopback  $(DESTDIR)$(BINDIR)
+ 	install -m 755 alsa_delay     $(DESTDIR)$(BINDIR)
+ 
+--- zita-alsa-pcmi-0.3.2/source/Makefile.orig	2018-08-24 20:41:30.000000000 +0200
++++ zita-alsa-pcmi-0.3.2/source/Makefile	2021-09-26 20:19:30.798426745 +0200
+@@ -30,8 +30,7 @@ MINVERS = 3.2
+ VERSION = $(MAJVERS).$(MINVERS)
+ 
+ CPPFLAGS += -DVERSION=\"$(VERSION)\" -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
+-CXXFLAGS += -O2 -Wall -fPIC
+-CXXFLAGS += -march=native
++CXXFLAGS += -Wall -fPIC
  LDLFAGS +=
  LDLIBS +=
  
-@@ -45,14 +45,14 @@
- 
- 
- $(ZITA-ALSA-PCMI_MIN): $(ZITA-ALSA-PCMI_O)
--	g++ -shared $(LDFLAGS) -Wl,-soname,$(ZITA-ALSA-PCMI_MAJ) -o $(ZITA-ALSA-PCMI_MIN) $(ZITA-ALSA-PCMI_O) $(ZITA-ALSA-PCMI_DEP)
-+	$(CXX) -shared $(LDFLAGS) -Wl,-soname,$(ZITA-ALSA-PCMI_MAJ) -o $(ZITA-ALSA-PCMI_MIN) $(ZITA-ALSA-PCMI_O) $(ZITA-ALSA-PCMI_DEP)
- 
- 
- install:	$(ZITA-ALSA-PCMI_MIN)
- 	install -Dm 644 $(ZITA-ALSA-PCMI_H)   $(DESTDIR)$(PREFIX)/include/$(ZITA-ALSA-PCMI_H)
- 	install -Dm 644 $(ZITA-ALSA-PCMI_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(ZITA-ALSA-PCMI_MIN)
- 	ln -sf $(ZITA-ALSA-PCMI_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(ZITA-ALSA-PCMI_SO)
+@@ -53,7 +52,7 @@ install:	$(ZITA-ALSA-PCMI_MIN)
+ 	install -d $(DESTDIR)$(LIBDIR)
+ 	install -m 644 $(ZITA-ALSA-PCMI_H) $(DESTDIR)$(INCDIR)
+ 	install -m 755 $(ZITA-ALSA-PCMI_MIN) $(DESTDIR)$(LIBDIR)
 -	ldconfig
-+	/sbin/ldconfig -n -N $(DESTDIR)$(PREFIX)/$(LIBDIR)
++	-/sbin/ldconfig -n -N $(DESTDIR)$(LIBDIR)
+ 	ln -sf $(ZITA-ALSA-PCMI_MIN) $(DESTDIR)$(LIBDIR)/$(ZITA-ALSA-PCMI_SO)
  
  uninstall:
- 	rm -rf $(DESTDIR)$(PREFIX)/include/zita-alsa-pcmi.h
