@@ -1,12 +1,12 @@
 Summary:	C++ library for easy access to ALSA PCM devices
 Summary(pl.UTF-8):	Biblioteka C++ do łatwego dostępu do urządzeń ALSA PCM
 Name:		zita-alsa-pcmi
-Version:	0.4.0
+Version:	0.6.1
 Release:	1
 License:	GPL v3+
 Group:		Libraries
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	aae5416f40d8d149e6d6a41610ecaace
+# Source0-md5:	729aac728c23f0bc40220c8a08e9cdbe
 Patch0:		makefile.patch
 URL:		http://kokkinizita.linuxaudio.org/linuxaudio/
 BuildRequires:	alsa-lib-devel
@@ -48,7 +48,7 @@ Requires:	%{name} = %{version}-%{release}
 %description apps
 Sample applications files for %{name} library.
 
-%description devel -l pl.UTF-8
+%description apps -l pl.UTF-8
 Przykładowe aplikacje do biblioteki %{name}.
 
 %prep
